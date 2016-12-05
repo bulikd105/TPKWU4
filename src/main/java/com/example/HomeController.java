@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import library.CompressFileToZip;
 import library.DecompressZipToFiles;
@@ -41,28 +42,29 @@ public class HomeController
 		
 		return "home";
 	}
-	
-	@RequestMapping(value = "/damian", method = RequestMethod.GET)
-	public String damian(Model model)
+		
+	@RequestMapping(value = "/answer", method = RequestMethod.GET)
+	public String answer(Model model, @RequestParam("person") String person)
 	{
-		String strona = TestDamian(); 
-		model.addAttribute("strona", strona);
-		return "damian";
-	}
-	
-	@RequestMapping(value = "/maciej", method = RequestMethod.GET)
-	public String maciej(Model model)
-	{
-	    try 
-	    {
-			String szyfrowanie = TestMaciej();
-			model.addAttribute("szyfrowanie", szyfrowanie);
-		} 
-	    catch (Exception e) 
-	    {
-			e.printStackTrace();
+		if(person.equals("damian"))
+		{
+			String strona = TestDamian(); 
+			model.addAttribute("strona", strona);
+			return "damian";
 		}
-		return "maciej";
+		else
+		{
+			 try 
+			    {
+					String szyfrowanie = TestMaciej();
+					model.addAttribute("szyfrowanie", szyfrowanie);
+				} 
+			    catch (Exception e) 
+			    {
+					e.printStackTrace();
+				}
+				return "maciej";
+		}
 	}
 	
 	
