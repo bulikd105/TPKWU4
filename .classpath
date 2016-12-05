@@ -27,5 +27,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="LibraryDamian.jar"/>
+	<classpathentry kind="lib" path="SzyfrowanieJar.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
