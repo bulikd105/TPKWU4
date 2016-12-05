@@ -50,7 +50,7 @@ public class HomeController
 		
 	// ROZPOZANAWANIE KTORA STRONA MA ZOSTAC OTWORZNA
 	@RequestMapping(value = "/answer", method = RequestMethod.GET)
-	public String answer(Model model, @RequestParam("person") String person, @RequestParam(required = false, value = "website") String website)
+	public String answer(Model model, @RequestParam("person") String person, @RequestParam(required = false, value = "website") String website, @RequestParam(required = false, value = "key") String key)
 	{
 		if(person.equals("damian"))
 		{
@@ -76,16 +76,22 @@ public class HomeController
 		}
 		else
 		{
-			 try 
-			    {
-					String szyfrowanie = TestMaciej();
-					model.addAttribute("szyfrowanie", szyfrowanie);
-				} 
-			    catch (Exception e) 
-			    {
-					e.printStackTrace();
+			try 
+		    {
+				if(key.equals(null))
+				{
+					key = "klucz";
 				}
-				return "maciej";
+				
+				String szyfrowanie = TestMaciej(key);
+				
+				model.addAttribute("szyfrowanie", szyfrowanie);
+			} 
+		    catch (Exception e) 
+		    {
+				e.printStackTrace();
+			}
+			return "maciej";
 		}
 	}
 	
@@ -117,18 +123,15 @@ public class HomeController
 		}
 	}
 	
-	
-	private String TestMaciej() throws Exception, Exception 
+	// METODA MACIEJ
+	private String TestMaciej(String key) throws Exception, Exception 
 	{
 		SzyfrowanieASE szyfrowanie = new SzyfrowanieASE();
-		System.out.println("Podaj klucz: ");
-		Scanner scan = new Scanner(System.in);
-		String pass = scan.nextLine();
 		OpenFile of = new OpenFile();
 		String fileContent = of.openFile();
 		try 
 		{
-			szyfrowanie.szyfrowanie(fileContent,pass );
+			szyfrowanie.szyfrowanie(fileContent,key);
 		} 
 		catch (InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) 
 		{
@@ -137,7 +140,7 @@ public class HomeController
 		return fileContent;
 	}
 
-	//METODA DAMIAN
+	// METODA DAMIAN
 	public String TestDamian(String web)
 	{
 		URL url;
