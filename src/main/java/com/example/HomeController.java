@@ -34,6 +34,7 @@ import szyfrowanie.SzyfrowanieASE;
 @Controller
 public class HomeController 
 {
+	// STRONA GŁÓWNA
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) 
 	{
@@ -47,22 +48,31 @@ public class HomeController
 		return "home";
 	}
 		
+	// ROZPOZANAWANIE KTORA STRONA MA ZOSTAC OTWORZNA
 	@RequestMapping(value = "/answer", method = RequestMethod.GET)
 	public String answer(Model model, @RequestParam("person") String person, @RequestParam(required = false, value = "website") String website)
 	{
-		if(website.equals(null))
-		{
-			website = "http://www.wp.pl";
-		}
-		
-		model.addAttribute("nazwa", website);
-		
 		if(person.equals("damian"))
 		{
-
+			if(website.startsWith("www."))
+			{
+				website = "http://" + website;
+			}
+			else if(website.startsWith("http://"))
+			{
+				
+			}
+			else 
+			{
+				website = "http://www.wp.pl";
+			}
+			
+			model.addAttribute("nazwa", website);
+			
 			String strona = TestDamian(website); 
 			model.addAttribute("strona", strona);
 			return "damian";
+			
 		}
 		else
 		{
@@ -79,6 +89,7 @@ public class HomeController
 		}
 	}
 	
+	// POBERANIE PLIKU DAMIAN
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
 	private void download(HttpServletResponse response, @RequestParam("format") String format)
 	{
@@ -126,6 +137,7 @@ public class HomeController
 		return fileContent;
 	}
 
+	//METODA DAMIAN
 	public String TestDamian(String web)
 	{
 		URL url;
