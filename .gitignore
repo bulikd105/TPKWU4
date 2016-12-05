@@ -24,3 +24,5 @@ nbdist/
 .nb-gradle/
 /Plik1.txt
 /Zip1.zip
+/decrypted.txt
+/encrypted.txt

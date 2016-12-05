@@ -83,9 +83,11 @@ public class HomeController
 					key = "klucz";
 				}
 				
-				String szyfrowanie = TestMaciej(key);
+				String dec = TestMaciej(key,1);
+				String enc = TestMaciej(key,2);
 				
-				model.addAttribute("szyfrowanie", szyfrowanie);
+				model.addAttribute("dec", dec);
+				model.addAttribute("enc", enc);
 			} 
 		    catch (Exception e) 
 		    {
@@ -106,9 +108,19 @@ public class HomeController
 			response.setContentType("txt/plain");
 
 		}
-		else
+		else if(format.equals("zip"))
 		{
 			src = "Zip1.zip";
+		}
+		else if(format.equals("enc"))
+		{
+			src = "encrypted.txt";
+			response.setContentType("txt/plain");
+		}
+		else 
+		{
+			src = "decrypted.txt";
+			response.setContentType("txt/plain");
 		}
 		
 		try 
@@ -124,20 +136,26 @@ public class HomeController
 	}
 	
 	// METODA MACIEJ
-	private String TestMaciej(String key) throws Exception, Exception 
+	private String TestMaciej(String key, int i) throws Exception, Exception 
 	{
 		SzyfrowanieASE szyfrowanie = new SzyfrowanieASE();
 		OpenFile of = new OpenFile();
 		String fileContent = of.openFile();
+		String str = "";
 		try 
 		{
 			szyfrowanie.szyfrowanie(fileContent,key);
+			str = szyfrowanie.getDec();
+			if(i == 2)
+			{
+				str = szyfrowanie.getEnc();
+			}
 		} 
 		catch (InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) 
 		{
 			e.printStackTrace();
 		}
-		return fileContent;
+		return str;
 	}
 
 	// METODA DAMIAN

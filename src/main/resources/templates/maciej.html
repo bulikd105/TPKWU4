@@ -6,9 +6,15 @@
 </head>
 <body>
     <p>Tutaj wyświetlony zostanie szyfrowanie pliku </p>
+    <form action="download" method="get">
+		Pobierz tą stronę w formacie:
+		<button name="format" type="submit" value="dec">DECRYPTED</button>
+		<button name="format" type="submit" value="enc">ENDCRYPTED</button>
+	</form>
     <p>------------------------------------------</p>
-    <p th:text="'Szyfrowanie:, ' + ${szyfrowanie}" />
+    <p th:text="'Decrypted:, ' + ${dec}" />
     
-
+	<p>------------------------------------------</p>
+	<p th:text="'Encrypted:, ' + ${enc}" />
 </body>
 </html>
