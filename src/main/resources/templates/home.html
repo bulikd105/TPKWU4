@@ -5,7 +5,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <p th:text="'Hello, ' + ${name} + '!'" />
-    <p th:text="'Czas servera ' + ${serverTime}"/>
+    <p th:text="'Czas serwera ' + ${serverTime}"/>
+    
+    <form action="damian" method="get">
+		Metody Damiana:
+		<button name="subject" type="submit" value="uruchom">Uruchom</button>
+	</form>
+	
+    <form action="maciej" method="get">
+		Metody Macieja:
+		<button name="subject" type="submit" value="uruchom">Uruchom</button>
+	</form>
+    
 </body>
 </html>
