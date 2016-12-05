@@ -1,5 +1,7 @@
 package com.example;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,22 +42,31 @@ public class HomeController
 		return "home";
 	}
 	
-	@RequestMapping(value = "/answer", method = RequestMethod.GET)
-	public String test(Model model)
+	@RequestMapping(value = "/damian", method = RequestMethod.GET)
+	public String damian(Model model)
 	{
-		TestDamian(); 
+		String strona = TestDamian(); 
+		model.addAttribute("strona", strona);
+		return "damian";
+	}
+	
+	@RequestMapping(value = "/maciej", method = RequestMethod.GET)
+	public String maciej(Model model)
+	{
 	    try 
 	    {
-			TestMaciej();
+			String szyfrowanie = TestMaciej();
+			model.addAttribute("szyfrowanie", szyfrowanie);
 		} 
 	    catch (Exception e) 
 	    {
 			e.printStackTrace();
 		}
-		return "answer";
+		return "maciej";
 	}
 	
-	private static void TestMaciej() throws Exception, Exception 
+	
+	private String TestMaciej() throws Exception, Exception 
 	{
 		SzyfrowanieASE szyfrowanie = new SzyfrowanieASE();
 		System.out.println("Podaj klucz: ");
@@ -63,19 +74,21 @@ public class HomeController
 		String pass = scan.nextLine();
 		OpenFile of = new OpenFile();
 		String fileContent = of.openFile();
-		try {
-			
+		try 
+		{
 			szyfrowanie.szyfrowanie(fileContent,pass );
-			
-		} catch (InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
-			
+		} 
+		catch (InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) 
+		{
 			e.printStackTrace();
 		}
+		return fileContent;
 	}
 
-	public static void TestDamian()
+	public String TestDamian()
 	{
 		URL url;
+		String str = "";
 		try 
 		{
 			url = new URL("http://www.wp.pl");
@@ -98,11 +111,31 @@ public class HomeController
 		{
 			compressFileToZip.Compress();
 			decompressFileToZip.Decompress();
-			System.out.println("All Good!");
+			
+			BufferedReader br = new BufferedReader(new FileReader("Plik1.txt"));
+			try 
+			{
+			    StringBuilder sb = new StringBuilder();
+			    String line = br.readLine();
+
+			    while (line != null) 
+			    {
+			        sb.append(line + "\n");
+			        sb.append(System.lineSeparator());
+			        line = br.readLine();
+			    }
+			    str = sb.toString();
+			} 
+			finally 
+			{
+			    br.close();
+			}
 		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
 		}
+		
+		return str;
 	}
 }
