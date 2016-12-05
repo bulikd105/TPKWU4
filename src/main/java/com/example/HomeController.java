@@ -1,8 +1,10 @@
 package com.example;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.InvalidKeyException;
@@ -14,7 +16,9 @@ import java.util.Scanner;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,11 +48,19 @@ public class HomeController
 	}
 		
 	@RequestMapping(value = "/answer", method = RequestMethod.GET)
-	public String answer(Model model, @RequestParam("person") String person)
+	public String answer(Model model, @RequestParam("person") String person, @RequestParam(required = false, value = "website") String website)
 	{
+		if(website.equals(null))
+		{
+			website = "http://www.wp.pl";
+		}
+		
+		model.addAttribute("nazwa", website);
+		
 		if(person.equals("damian"))
 		{
-			String strona = TestDamian(); 
+
+			String strona = TestDamian(website); 
 			model.addAttribute("strona", strona);
 			return "damian";
 		}
@@ -64,6 +76,33 @@ public class HomeController
 					e.printStackTrace();
 				}
 				return "maciej";
+		}
+	}
+	
+	@RequestMapping(value = "/download", method = RequestMethod.GET)
+	private void download(HttpServletResponse response, @RequestParam("format") String format)
+	{
+		String src;
+		if(format.equals("txt"))
+		{
+			src = "Plik1.txt";
+			response.setContentType("txt/plain");
+
+		}
+		else
+		{
+			src = "Zip1.zip";
+		}
+		
+		try 
+		{
+			InputStream is = new FileInputStream(src);
+			IOUtils.copy(is, response.getOutputStream());
+			response.flushBuffer();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
 		}
 	}
 	
@@ -87,13 +126,14 @@ public class HomeController
 		return fileContent;
 	}
 
-	public String TestDamian()
+	public String TestDamian(String web)
 	{
 		URL url;
 		String str = "";
 		try 
 		{
-			url = new URL("http://www.wp.pl");
+			//url = new URL("http://www.wp.pl");
+			url = new URL(web);
 			FileDownload fileDownload = new FileDownload(url, "Plik1.txt");
 			fileDownload.Download();
 		} 

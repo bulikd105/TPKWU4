@@ -6,7 +6,13 @@
 </head>
 <body>
 
-    <p>Witaj, tutaj zobaczysz wywałanie metody z zadania3 </p>
+    <p>Witaj, właśnie wywołałeś metode z biblioteki Damian'a </p>
+    <p th:text="'Strona którą wybrałeś to: ' + ${nazwa}" />
+     <form action="download" method="get">
+		Pobierz tą stronę w formacie:
+		<button name="format" type="submit" value="txt">TXT</button>
+		<button name="format" type="submit" value="zip">ZIP</button>
+	</form>
     <p>------------------------------------------</p>
     <p th:text="'Kod strony: ' + ${strona}" />
     
